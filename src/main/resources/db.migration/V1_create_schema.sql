@@ -1,7 +1,7 @@
 CREATE TABLE "dataset" (
   "id" uuid NOT NULL,
-  "searchRequestId" uuid NOT NULL,
-  "data" CHARACTER VARYING(255)
+  "search_request_id" uuid NOT NULL,
+  "data" VARCHAR
 );
 
 CREATE UNIQUE INDEX dataset_pkey

@@ -17,18 +17,21 @@ public class SearchController {
 
     @Autowired
     private SearchOrchestrator searchOrchestrator;
+
     /*
      * Request Mapping URLs
      */
-
     public static final String BASE_URL         = "/search";
-
     public static final String SEARCH_BY_YEAR   = BASE_URL + "/byYear/";
 
     @RequestMapping(value = SEARCH_BY_YEAR, method = RequestMethod.POST)
     public String searchByYear (@RequestBody final String year) {
-        System.out.println(year);
-        return searchOrchestrator.searchByYear(year);
+        String message =
+                "Your dataset is available for download here: http://localhost:8080" +
+                RequestDataSetController.REQUEST_ID_INPUT +
+                searchOrchestrator.searchByYear(year).toString();
+
+        return message;
     }
 
 }
