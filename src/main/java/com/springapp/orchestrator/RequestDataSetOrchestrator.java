@@ -16,8 +16,11 @@ import java.util.UUID;
 @Component
 public class RequestDataSetOrchestrator {
 
-    @Autowired
-    DataSetRepository repository;
+    private DataSetRepository repository;
+
+    public RequestDataSetOrchestrator(final DataSetRepository repository) {
+        this.repository = repository;
+    }
 
     public List<DataSetEntity> getDataSet(final UUID requestId) {
         return repository.findBySearchRequestId(requestId);

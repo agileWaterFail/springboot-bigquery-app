@@ -21,13 +21,16 @@ import java.util.UUID;
 @RestController
 public class RequestDataSetController {
 
-    @Autowired
     private RequestDataSetOrchestrator requestDataSetOrchestrator;
     /*
      * Request Mapping URLs
     */
     public static final String GET_DATA_SET = "/requestId";
     public static final String REQUEST_ID_INPUT = GET_DATA_SET + "/?requestId=";
+
+    public RequestDataSetController(final RequestDataSetOrchestrator requestDataSetOrchestrator) {
+        this.requestDataSetOrchestrator = requestDataSetOrchestrator;
+    }
 
     @RequestMapping(value = GET_DATA_SET, method = RequestMethod.GET)
     public List<DataSetEntity> getDataSet (@RequestParam(name = "requestId") final String requestId) {

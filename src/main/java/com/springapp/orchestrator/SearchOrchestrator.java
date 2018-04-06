@@ -19,11 +19,14 @@ import java.util.UUID;
 @Slf4j
 public class SearchOrchestrator {
 
-    @Autowired
     private BigQueryService service;
 
-    @Autowired
     private DataSetRepository repository;
+
+    public SearchOrchestrator(final BigQueryService service, final DataSetRepository repository) {
+        this.service = service;
+        this.repository = repository;
+    }
 
     public UUID searchByYear(final String year) {
         final UUID reqeustId = UUID.randomUUID();

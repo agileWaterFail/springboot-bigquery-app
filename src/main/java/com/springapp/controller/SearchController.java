@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class SearchController {
 
-    @Autowired
     private SearchOrchestrator searchOrchestrator;
 
     /*
@@ -23,6 +22,10 @@ public class SearchController {
      */
     public static final String BASE_URL         = "/search";
     public static final String SEARCH_BY_YEAR   = BASE_URL + "/byYear/";
+
+    public SearchController(final SearchOrchestrator searchOrchestrator) {
+        this.searchOrchestrator = searchOrchestrator;
+    }
 
     @RequestMapping(value = SEARCH_BY_YEAR, method = RequestMethod.POST)
     public String searchByYear (@RequestBody final String year) {
