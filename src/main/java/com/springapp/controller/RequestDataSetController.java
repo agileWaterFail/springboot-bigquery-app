@@ -31,6 +31,14 @@ public class RequestDataSetController {
         this.requestDataSetOrchestrator = requestDataSetOrchestrator;
     }
 
+    /**
+     * Controller method for getting stored data by RequestId
+     *
+     * Will handle malformed request id with http status 400 BAD REQUEST
+     *
+     * @param requestId
+     * @return List<DataSetEntity> {@link DataSetEntity}
+     */
     @RequestMapping(value = GET_DATA_SET, method = RequestMethod.GET)
     public List<DataSetEntity> getDataSet (@RequestParam(name = "requestId") final String requestId) {
         List<DataSetEntity> dataSetEntityList = new ArrayList<>();

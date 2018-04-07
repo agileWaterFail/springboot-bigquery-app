@@ -8,6 +8,8 @@ import java.util.List;
 import java.util.UUID;
 
 /**
+ * Orchestrate Retrieve calls to the DB
+ *
  * @author davidgiametta
  * @since 4/6/18
  */
@@ -20,6 +22,11 @@ public class RequestDataSetOrchestrator {
         this.repository = repository;
     }
 
+    /**
+     * Get the dataSets by request Id
+     * @param requestId request id
+     * @return List<DataSetEntity> {@link DataSetEntity}
+     */
     public List<DataSetEntity> getDataSet(final UUID requestId) {
         return repository.findBySearchRequestId(requestId);
     }

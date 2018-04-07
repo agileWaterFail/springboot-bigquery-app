@@ -29,6 +29,19 @@ public class SearchController {
         this.searchOrchestrator = searchOrchestrator;
     }
 
+    /**
+     * Controller method for searching by year
+     *
+     * Will handle malformed input with http status 400 BAD REQUEST
+     * Will handle internal exceptions for BigQuery with http status 500 INTERNAL SERVER ERROR
+     *
+     * Should return a ready to use url to retrieve data found by BigQuery or if no results
+     * where found an Empty Results message
+     *
+     * @param yearMap JSONObject in a Map format
+     * @return String
+     */
+
     @RequestMapping(value = SEARCH_BY_YEAR, method = RequestMethod.POST)
     public String searchByYear (@RequestBody final Map<String,Object> yearMap) {
         final String year = yearMap.get(YEAR).toString();

@@ -13,6 +13,8 @@ import java.util.List;
 import java.util.UUID;
 
 /**
+ * Orchestrate all BigQuery searches and Create/Update calls to the DB
+ *
  * @author davidgiametta
  * @since 4/6/18
  */
@@ -28,6 +30,17 @@ public class SearchOrchestrator {
         this.service = service;
         this.repository = repository;
     }
+
+    /**
+     * Search by year
+     *
+     * Try to use BigQuery to search by year - Throw internal exception on failure
+     * Will handle empty results by passing back null UUID
+     * Make saveall call to the repo on successful results from BigQuery
+     *
+     * @param year the year to search for
+     * @return UUID {@link UUID}
+     */
 
     public UUID searchByYear(final String year) {
         final UUID reqeustId = UUID.randomUUID();

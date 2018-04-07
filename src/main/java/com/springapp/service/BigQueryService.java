@@ -19,6 +19,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
+ * BigQuery Service - setup google credentials and handle all BigQuery searches
+ *
  * @author davidgiametta
  * @since 4/5/18
  */
@@ -30,6 +32,16 @@ public class BigQueryService {
     private final String credsPath = "/src/main/java/com/springapp/service/creds";
     private final String workingDirectory = System.getProperty("user.dir") + credsPath;
 
+    /**
+     * Standard BigQuery setup used from examples altered to make a query for searching by year against
+     * bigquery-public-data:bls.unemployment_cps
+     * limited to 10 results because I don't know how Google Billing works
+     *
+     * @param filterYear year to search for
+     * @param jobId contains a Unique UUID used for requesting data from our local db
+     * @return List<String> JSON Objects converted to string and added to a List
+     * @throws Exception
+     */
     public List<String> searchByYear(final String filterYear, final JobId jobId) throws Exception {
         final BigQuery bigquery = BigQueryOptions.newBuilder().setProjectId(projectId).setCredentials(getCreds()).build().getService();
 
