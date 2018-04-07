@@ -2,6 +2,7 @@ package com.springapp.orchestrator;
 
 import com.google.cloud.bigquery.JobId;
 import com.springapp.entity.DataSetEntity;
+import com.springapp.orchestrator.exception.SearchException;
 import com.springapp.repository.DataSetRepository;
 import com.springapp.service.BigQueryService;
 import lombok.extern.slf4j.Slf4j;
@@ -44,7 +45,8 @@ public class SearchOrchestrator {
                 repository.save(dataSetEntity);
             });
         } catch (Exception ex) {
-            log.error("AHHHHHHH",ex );
+            String message = "Failure to searchByYear";
+            throw new SearchException(message,ex);
         }
 
         return reqeustId;
