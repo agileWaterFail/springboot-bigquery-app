@@ -1,15 +1,14 @@
 package com.springapp.controller;
 
+import com.springapp.controller.exception.RequestDataSetBadRequestException;
 import com.springapp.entity.DataSetEntity;
 import com.springapp.orchestrator.RequestDataSetOrchestrator;
-import com.springapp.orchestrator.SearchOrchestrator;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -34,7 +33,28 @@ public class RequestDataSetController {
 
     @RequestMapping(value = GET_DATA_SET, method = RequestMethod.GET)
     public List<DataSetEntity> getDataSet (@RequestParam(name = "requestId") final String requestId) {
-        return requestDataSetOrchestrator.getDataSet(UUID.fromString(requestId));
+        List<DataSetEntity> dataSetEntityList = new ArrayList<>();
 
+        if (isUUID(requestId)) {
+            dataSetEntityList = requestDataSetOrchestrator.getDataSet(UUID.fromString(requestId));
+        } else {
+            throw new RequestDataSetBadRequestException("Your request id is not in the proper format (UUID).");
+        }
+
+        return dataSetEntityList;
+
+    }
+
+    private static boolean isUUID(String str)
+    {
+        try
+        {
+            UUID d = UUID.fromString(str);
+        }
+        catch(IllegalArgumentException ex)
+        {
+            return false;
+        }
+        return true;
     }
 }

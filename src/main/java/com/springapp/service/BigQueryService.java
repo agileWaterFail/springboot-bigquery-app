@@ -25,23 +25,13 @@ import java.util.List;
 @Service
 public class BigQueryService {
 
-    private GoogleCredentials getCreds() throws IOException{
-        // Load credentials from JSON key file. If you can't set the GOOGLE_APPLICATION_CREDENTIALS
-        // environment variable, you can explicitly load the credentials file to construct the
-        // credentials.
-        GoogleCredentials credentials;
-        final String filename = "testingYourSkill-eecb97c7a1e9.json";
-        final String workingDirectory = System.getProperty("user.dir") + "/src/main/java/com/springapp/service/creds";
-
-        final File credentialsPath = new File(workingDirectory, filename);
-        try (FileInputStream serviceAccountStream = new FileInputStream(credentialsPath)) {
-            credentials = ServiceAccountCredentials.fromStream(serviceAccountStream);
-        }
-        return credentials;
-    }
+    private final String projectId = "testingyourskill-200218";
+    private final String filename = "testingYourSkill-eecb97c7a1e9.json";
+    private final String credsPath = "/src/main/java/com/springapp/service/creds";
+    private final String workingDirectory = System.getProperty("user.dir") + credsPath;
 
     public List<String> searchByYear(final String filterYear, final JobId jobId) throws Exception {
-        final BigQuery bigquery = BigQueryOptions.newBuilder().setProjectId("testingyourskill-200218").setCredentials(getCreds()).build().getService();
+        final BigQuery bigquery = BigQueryOptions.newBuilder().setProjectId(projectId).setCredentials(getCreds()).build().getService();
 
         final QueryJobConfiguration queryConfig =
                 QueryJobConfiguration.newBuilder(
@@ -71,26 +61,39 @@ public class BigQueryService {
 
         final TableResult result = queryJob.getQueryResults();
 
+        final List<String> fieldList = new ArrayList<>();
+
+        fieldList.add("series_id");
+        fieldList.add("year");
+        fieldList.add("period");
+        fieldList.add("value");
+        fieldList.add("footnote_codes");
+        fieldList.add("date");
+        fieldList.add("series_title");
+
+        return tableResultToJSONStringListConverter(result, fieldList);
+    }
+
+    private GoogleCredentials getCreds() throws IOException{
+        // Load credentials from JSON key file. If you can't set the GOOGLE_APPLICATION_CREDENTIALS
+        // environment variable, you can explicitly load the credentials file to construct the
+        // credentials.
+        GoogleCredentials credentials;
+
+        final File credentialsPath = new File(workingDirectory, filename);
+        try (FileInputStream serviceAccountStream = new FileInputStream(credentialsPath)) {
+            credentials = ServiceAccountCredentials.fromStream(serviceAccountStream);
+        }
+        return credentials;
+    }
+
+    private List<String> tableResultToJSONStringListConverter(TableResult result, List<String> fields) {
         final List<String> queryList = new ArrayList<>();
 
         for (FieldValueList row : result.iterateAll()) {
-            String series_id = row.get("series_id").getStringValue();
-            String year = row.get("year").getStringValue();
-            String period = row.get("period").getStringValue();
-            String value = row.get("value").getStringValue();
-            String footnote_codes = row.get("footnote_codes").getStringValue();
-            String date = row.get("date").getStringValue();
-            String series_title = row.get("series_title").getStringValue();
-
             final JSONObject jsonObject = new JSONObject();
 
-            jsonObject.put("series_id", series_id);
-            jsonObject.put("year", year);
-            jsonObject.put("period", period);
-            jsonObject.put("value", value);
-            jsonObject.put("footnote_codes", footnote_codes);
-            jsonObject.put("date", date);
-            jsonObject.put("series_title", series_title);
+            fields.forEach(field -> jsonObject.put(field, row.get(field).getStringValue()));
 
             queryList.add(jsonObject.toString());
         }

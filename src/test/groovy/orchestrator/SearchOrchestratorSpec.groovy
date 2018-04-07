@@ -2,6 +2,7 @@ package orchestrator
 
 import com.google.cloud.bigquery.JobId
 import com.springapp.orchestrator.SearchOrchestrator
+import com.springapp.orchestrator.exception.BigQuerySearchException
 import com.springapp.repository.DataSetRepository
 import com.springapp.service.BigQueryService
 import spock.lang.Specification
@@ -37,9 +38,41 @@ class SearchOrchestratorSpec extends Specification {
         1 * service.searchByYear(year, _ as JobId) >> data
 
         then: 'we expect a call to save our resulting entity'
-        1 * repository.save(_)
+        1 * repository.saveAll(_)
 
-        then: 'results should contain what we expect'
+        then: 'result should be a unique UUID'
         assert result instanceof UUID
+    }
+
+    def 'Orchestrator test with no results'(){
+        given: 'Our our input data (year) for searching'
+        def year = '1987324'
+        data = []
+
+        when: 'we make the call to searchByYear'
+        def result = tested.searchByYear(year)
+
+        then: 'we expect a call to the service with no results returned'
+        1 * service.searchByYear(year, _ as JobId) >> data
+
+        then: 'we expect no call to save our resulting entity'
+        0 * repository.saveAll(_)
+
+        then: 'result should be null'
+        assert result == null
+    }
+
+    def 'Orchestrator exception test'(){
+        given: 'Our our input data (year) is bad and cant be queryed on'
+        def year = 'asdf'
+
+        when: 'we make the call to searchByYear'
+        tested.searchByYear(year)
+
+        then: 'our service throws an exception'
+        1 * service.searchByYear(year, _ as JobId) >> new Exception()
+
+        then: 'we expect to handle it and throw a BigQuerySearchException'
+        thrown(BigQuerySearchException)
     }
 }

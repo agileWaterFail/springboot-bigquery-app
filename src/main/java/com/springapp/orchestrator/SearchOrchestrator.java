@@ -2,13 +2,13 @@ package com.springapp.orchestrator;
 
 import com.google.cloud.bigquery.JobId;
 import com.springapp.entity.DataSetEntity;
-import com.springapp.orchestrator.exception.SearchException;
+import com.springapp.orchestrator.exception.BigQuerySearchException;
 import com.springapp.repository.DataSetRepository;
 import com.springapp.service.BigQueryService;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -32,9 +32,21 @@ public class SearchOrchestrator {
     public UUID searchByYear(final String year) {
         final UUID reqeustId = UUID.randomUUID();
         final JobId jobId = JobId.of(reqeustId.toString());
-        try {
-            final List<String> resultList = service.searchByYear(year, jobId);
+        final List<DataSetEntity> dataSetEntityList = new ArrayList<>();
+        List<String> resultList = new ArrayList<>();
 
+        try {
+            resultList = service.searchByYear(year, jobId);
+
+        } catch (Exception ex) {
+            String message = "Failure to searchByYear";
+            throw new BigQuerySearchException(message,ex);
+        }
+
+        if (resultList.isEmpty()) {
+            return null;
+
+        } else {
             resultList.forEach(result -> {
                 final DataSetEntity dataSetEntity = DataSetEntity.builder()
                         .id(UUID.randomUUID())
@@ -42,13 +54,11 @@ public class SearchOrchestrator {
                         .data(result)
                         .build();
 
-                repository.save(dataSetEntity);
+                dataSetEntityList.add(dataSetEntity);
             });
-        } catch (Exception ex) {
-            String message = "Failure to searchByYear";
-            throw new SearchException(message,ex);
-        }
 
+            repository.saveAll(dataSetEntityList);
+        }
         return reqeustId;
     }
 }

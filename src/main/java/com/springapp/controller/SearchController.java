@@ -1,15 +1,13 @@
 package com.springapp.controller;
 
+import com.springapp.controller.exception.SearchYearNumericException;
 import com.springapp.orchestrator.SearchOrchestrator;
-import org.json.JSONObject;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
-
 import java.util.Map;
+import java.util.UUID;
 
 /**
  * @author davidgiametta
@@ -26,19 +24,44 @@ public class SearchController {
     public static final String YEAR             = "year";
     public static final String BASE_URL         = "/search";
     public static final String SEARCH_BY_YEAR   = BASE_URL + "/byYear/";
-
+    public static final String EMPTY_RESULTS    = "Sorry no results matched your request.";
     public SearchController(final SearchOrchestrator searchOrchestrator) {
         this.searchOrchestrator = searchOrchestrator;
     }
 
     @RequestMapping(value = SEARCH_BY_YEAR, method = RequestMethod.POST)
     public String searchByYear (@RequestBody final Map<String,Object> yearMap) {
-        String message =
-                "Your dataset is available for download here: http://localhost:8080" +
-                RequestDataSetController.REQUEST_ID_INPUT +
-                searchOrchestrator.searchByYear(yearMap.get(YEAR).toString()).toString();
+        final String year = yearMap.get(YEAR).toString();
+        String message = "Your dataset is now available here: http://localhost:8080" +
+                RequestDataSetController.REQUEST_ID_INPUT;
+        UUID requestId;
+
+        if (isNumeric(year)) {
+                requestId = searchOrchestrator.searchByYear(year);
+        } else {
+            throw new SearchYearNumericException("Unable to convert input to numeral");
+        }
+
+        if (requestId != null) {
+            message += requestId.toString();
+        } else {
+            message = EMPTY_RESULTS;
+        }
 
         return message;
+    }
+
+    private static boolean isNumeric(String str)
+    {
+        try
+        {
+            Integer d = Integer.parseInt(str);
+        }
+        catch(NumberFormatException nfe)
+        {
+            return false;
+        }
+        return true;
     }
 
 }
