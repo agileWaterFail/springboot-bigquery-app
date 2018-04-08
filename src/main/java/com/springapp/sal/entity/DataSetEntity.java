@@ -1,4 +1,4 @@
-package com.springapp.entity;
+package com.springapp.sal.entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

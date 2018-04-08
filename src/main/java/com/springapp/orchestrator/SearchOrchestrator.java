@@ -1,14 +1,12 @@
 package com.springapp.orchestrator;
 
 import com.google.cloud.bigquery.JobId;
-import com.springapp.entity.DataSetEntity;
-import com.springapp.orchestrator.exception.BigQuerySearchException;
-import com.springapp.repository.DataSetRepository;
+import com.springapp.sal.entity.DataSetEntity;
+import com.springapp.sal.repository.DataSetRepository;
 import com.springapp.service.BigQueryService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;

@@ -1,7 +1,7 @@
 package com.springapp.orchestrator;
 
-import com.springapp.entity.DataSetEntity;
-import com.springapp.repository.DataSetRepository;
+import com.springapp.sal.entity.DataSetEntity;
+import com.springapp.sal.repository.DataSetRepository;
 import org.springframework.stereotype.Component;
 
 import java.util.List;

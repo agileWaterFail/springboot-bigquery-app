@@ -1,7 +1,7 @@
 package com.springapp.controller;
 
 import com.springapp.controller.exception.RequestDataSetBadRequestException;
-import com.springapp.entity.DataSetEntity;
+import com.springapp.sal.entity.DataSetEntity;
 import com.springapp.orchestrator.RequestDataSetOrchestrator;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
