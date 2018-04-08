@@ -8,6 +8,7 @@ import com.springapp.service.BigQueryService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -48,17 +49,12 @@ public class SearchOrchestrator {
         final List<DataSetEntity> dataSetEntityList = new ArrayList<>();
         List<String> resultList = new ArrayList<>();
 
-        try {
-            resultList = service.searchByYear(year, jobId);
+        // call our bigquery service
+        resultList = service.searchByYear(year, jobId);
 
-        } catch (Exception ex) {
-            String message = "Failure to searchByYear";
-            throw new BigQuerySearchException(message,ex);
-        }
-
+        // if result list is empty return null else save down results and return normal requestId
         if (resultList.isEmpty()) {
             return null;
-
         } else {
             resultList.forEach(result -> {
                 final DataSetEntity dataSetEntity = DataSetEntity.builder()

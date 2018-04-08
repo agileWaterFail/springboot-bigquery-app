@@ -2,6 +2,9 @@ package controller
 
 import com.springapp.SpringbootBigqueryAppApplication
 import com.springapp.controller.RequestDataSetController
+import com.springapp.entity.DataSetEntity
+import com.springapp.repository.DataSetRepository
+import org.junit.BeforeClass
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.test.web.servlet.MockMvc
@@ -9,8 +12,8 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders
 import org.springframework.web.context.WebApplicationContext
 import org.unitils.dbunit.annotation.DataSet
 import org.unitils.dbunit.datasetloadstrategy.impl.CleanInsertLoadStrategy
+import spock.lang.Shared
 import spock.lang.Specification
-
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
 
@@ -24,19 +27,38 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
         loadStrategy = CleanInsertLoadStrategy
 )
 @SpringBootTest(
-        classes = [SpringbootBigqueryAppApplication])
+        classes = [SpringbootBigqueryAppApplication]
+
+)
  class RequestDataSetControllerSpec extends Specification{
-    def requestId = 'a4a76bf5-4a0e-4031-a63a-103a419dac8d'
 
     @Autowired
     private WebApplicationContext context
+    @Autowired
+    DataSetRepository repository;
 
     private MockMvc mockMvc
+    @Shared
+    private UUID requestId = UUID.randomUUID()
+    @Shared
+    private DataSetEntity dataSetEntity = DataSetEntity.builder()
+        .id(UUID.randomUUID())
+        .searchRequestId(requestId)
+        .data('test data')
+        .build()
 
     def setup() {
         this.mockMvc = MockMvcBuilders.webAppContextSetup(this.context)
                 .build()
 
+        //setup data.
+        repository.save(dataSetEntity)
+
+    }
+
+    def cleanup() {
+        //delete the datas
+        repository.delete(dataSetEntity)
     }
 
     def 'Test our RequestDataSet Controller' () {
@@ -55,4 +77,5 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
         body != null
 
     }
+
 }

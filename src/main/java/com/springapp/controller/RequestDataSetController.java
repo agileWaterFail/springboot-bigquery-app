@@ -43,6 +43,7 @@ public class RequestDataSetController {
     public List<DataSetEntity> getDataSet (@RequestParam(name = "requestId") final String requestId) {
         List<DataSetEntity> dataSetEntityList = new ArrayList<>();
 
+        // Confirm input is UUID else throw exception
         if (isUUID(requestId)) {
             dataSetEntityList = requestDataSetOrchestrator.getDataSet(UUID.fromString(requestId));
         } else {
@@ -53,14 +54,10 @@ public class RequestDataSetController {
 
     }
 
-    private static boolean isUUID(String str)
-    {
-        try
-        {
+    private static boolean isUUID(String str) {
+        try {
             UUID d = UUID.fromString(str);
-        }
-        catch(IllegalArgumentException ex)
-        {
+        } catch(IllegalArgumentException ex) {
             return false;
         }
         return true;

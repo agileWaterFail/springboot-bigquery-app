@@ -62,17 +62,4 @@ class SearchOrchestratorSpec extends Specification {
         assert result == null
     }
 
-    def 'Orchestrator exception test'(){
-        given: 'Our our input data (year) is bad and cant be queryed on'
-        def year = 'asdf'
-
-        when: 'we make the call to searchByYear'
-        tested.searchByYear(year)
-
-        then: 'our service throws an exception'
-        1 * service.searchByYear(year, _ as JobId) >> new Exception()
-
-        then: 'we expect to handle it and throw a BigQuerySearchException'
-        thrown(BigQuerySearchException)
-    }
 }

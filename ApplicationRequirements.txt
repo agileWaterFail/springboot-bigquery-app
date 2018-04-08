@@ -1,0 +1,26 @@
+Workflow:
+
+I’m looking for an application that can query BigQuery’s public BLS dataset when I POST to an endpoint.
+The table is `unemployment_cps` and I want to be able to filter my results by year based on a json payload
+sent to the endpoint you create. I want these results to be persisted so that I can download them later
+from a different endpoint. We’ll be testing the functionality using Postman.
+
+Requirements:
+
+Not many, the only requirements are that you use:
+
+
+Spring Boot
+Google BigQuery
+Java 8
+
+The results for later retrieval can be stored locally, S3, a database of your choosing, etc. Whatever you
+are most comfortable with.
+
+Google has a free trial so this shouldn’t incur any expense.
+
+After you have done this, upload your code to Github and send us the link. There’s no need to host this
+anywhere, as long as it can run locally.
+
+The workflow and requirements and intentionally left wide-open, handle this however you feel most comfortable.
+Also, importantly, this should only take a couple of hours so don’t spend too much time on it.
