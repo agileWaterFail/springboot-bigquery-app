@@ -12,7 +12,7 @@ of this application
 
 Table of Contents:
 1) To Run
-2) Exposed endpoints and their usage
+2) Api and usage
 3) Enhancements
 4) Tests
 5) Query Limit
@@ -30,7 +30,7 @@ Table of Contents:
 
     Intellij Configuration - reference the IntellijConfiguration.png to see my run config
 
-2) Exposed endpoints and their usage
+2) Api and usage
     POST:
         http://localhost:8080/search/byYear/
             headers:
