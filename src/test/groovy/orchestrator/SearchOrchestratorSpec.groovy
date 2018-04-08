@@ -2,12 +2,10 @@ package orchestrator
 
 import com.google.cloud.bigquery.JobId
 import com.springapp.orchestrator.SearchOrchestrator
-import com.springapp.orchestrator.exception.BigQuerySearchException
-import com.springapp.repository.DataSetRepository
+import com.springapp.sal.repository.DataSetRepository
 import com.springapp.service.BigQueryService
 import spock.lang.Specification
 import spock.lang.Subject
-
 
 class SearchOrchestratorSpec extends Specification {
 
@@ -41,7 +39,7 @@ class SearchOrchestratorSpec extends Specification {
         1 * repository.saveAll(_)
 
         then: 'result should be a unique UUID'
-        assert result instanceof UUID
+        assert result instanceof Optional<UUID>
     }
 
     def 'Orchestrator test with no results'(){
@@ -59,7 +57,7 @@ class SearchOrchestratorSpec extends Specification {
         0 * repository.saveAll(_)
 
         then: 'result should be null'
-        assert result == null
+        assert result == Optional.empty()
     }
 
 }

@@ -9,6 +9,7 @@ import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 /**
@@ -41,7 +42,7 @@ public class SearchOrchestrator {
      * @return UUID {@link UUID}
      */
 
-    public UUID searchByYear(final String year) {
+    public Optional<UUID> searchByYear(final String year) {
         final UUID reqeustId = UUID.randomUUID();
         final JobId jobId = JobId.of(reqeustId.toString());
         final List<DataSetEntity> dataSetEntityList = new ArrayList<>();
@@ -52,7 +53,7 @@ public class SearchOrchestrator {
 
         // if result list is empty return null else save down results and return normal requestId
         if (resultList.isEmpty()) {
-            return null;
+            return Optional.empty();
         } else {
             resultList.forEach(result -> {
                 final DataSetEntity dataSetEntity = DataSetEntity.builder()
@@ -66,6 +67,6 @@ public class SearchOrchestrator {
 
             repository.saveAll(dataSetEntityList);
         }
-        return reqeustId;
+        return Optional.of(reqeustId);
     }
 }

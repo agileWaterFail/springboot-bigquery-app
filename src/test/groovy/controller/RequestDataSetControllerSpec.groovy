@@ -2,9 +2,8 @@ package controller
 
 import com.springapp.SpringbootBigqueryAppApplication
 import com.springapp.controller.RequestDataSetController
-import com.springapp.entity.DataSetEntity
-import com.springapp.repository.DataSetRepository
-import org.junit.BeforeClass
+import com.springapp.sal.entity.DataSetEntity
+import com.springapp.sal.repository.DataSetRepository
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.test.web.servlet.MockMvc

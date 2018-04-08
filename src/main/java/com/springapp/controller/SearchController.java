@@ -56,7 +56,7 @@ public class SearchController {
 
             // Confirm input is Integer else throw exception
             if (isNumeric(year)) {
-                requestId = searchOrchestrator.searchByYear(year);
+                requestId = searchOrchestrator.searchByYear(year).orElse(null);
             } else {
                 throw new SearchYearNumericException(MALFORMED_INPUT);
             }

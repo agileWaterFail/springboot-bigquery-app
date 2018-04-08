@@ -1,11 +1,10 @@
 package orchestrator
 
-import com.springapp.entity.DataSetEntity
+import com.springapp.sal.entity.DataSetEntity
 import com.springapp.orchestrator.RequestDataSetOrchestrator
-import com.springapp.repository.DataSetRepository
+import com.springapp.sal.repository.DataSetRepository
 import spock.lang.Specification
 import spock.lang.Subject
-
 
 class RequestDataSetOrchestratorSpec extends Specification {
 
