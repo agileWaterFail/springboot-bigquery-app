@@ -41,11 +41,12 @@ Table of Contents:
                 Key: requestId
                 Value: UUID
     USAGE:
+        Boot up the app and make sure its available from localhost:8080
         Using POSTMAN give the post endpoint a year and send then click the resulting url and send
 
 3) Enhancements
-    1) Stop passing around the entity and convert it to an internal model for use throughout the app using a
-    ConversionService bean and a custom converter that trims unnecessary fields
+    1) Stop passing around the entity and convert it to an internal model for use throughout the app using
+    a ConversionService bean and a custom converter that trims unnecessary fields
     2) Add more tests following a proper BDD Pyramid
     3) Better Exception Handling in BigQueryService
     4) Learn more React and add a front end ui
