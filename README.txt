@@ -23,8 +23,11 @@ Table of Contents:
 
     Update credentials.properties to point at your json file and specify your project id
 
-    Setup your own postgres db to run on PORT 5432 - update application.properties to match your credentials
-    
+    Setup your own postgres db to run on PORT 5432 - update application.properties to match
+    your credentials
+
+    Intellij Configuration - reference the IntellijConfiguration.png to see my run config
+
 2) Exposed endpoints and their usage
     POST:
         http://localhost:8080/search/byYear/
