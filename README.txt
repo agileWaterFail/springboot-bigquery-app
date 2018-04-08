@@ -15,6 +15,7 @@ Table of Contents:
 2) Exposed endpoints and their usage
 3) Enhancements
 4) Tests
+5) Query Limit
 
 1) To Run
     Missing from the application are google certs you'll need - google cloud account
@@ -52,3 +53,6 @@ Table of Contents:
 4) Tests
     Testing is done using groovy spock tests and are made available for viewing after a maven build in
     /build/spock-reports/index.html
+
+5) Query Limit
+    Currently the query is limited to 10 - read code comments in BigQueryService.java
