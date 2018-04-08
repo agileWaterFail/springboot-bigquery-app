@@ -18,10 +18,12 @@ Table of Contents:
 5) Query Limit
 
 1) To Run
+    You must have a google cloud account with Big Query Api enabled
+
     Missing from the application are google certs you'll need - google cloud account
     credentials json file
 
-    Update credentials.properties to point at your json file and specify your project id
+    Update credentials.properties to point at your credentials json file and specify your project id
 
     Setup your own postgres db to run on PORT 5432 - update application.properties to match
     your credentials
