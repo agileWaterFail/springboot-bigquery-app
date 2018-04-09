@@ -57,6 +57,8 @@ Table of Contents:
     2) Add more tests following a proper BDD Pyramid
     3) Better Exception Handling in BigQueryService
     4) Learn more React and add a front end ui
+    5) Modularize the search slice to accept map containing whatever table, and field they want.  Use service
+    to determine if table/field exists and if so perform the search.  Also implement paging
 
 4) Tests
     Testing is done using groovy spock tests and are made available for viewing after a maven build in

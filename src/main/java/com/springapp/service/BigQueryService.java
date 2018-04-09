@@ -2,6 +2,7 @@ package com.springapp.service;
 
 import com.google.cloud.bigquery.BigQuery;
 import com.google.cloud.bigquery.BigQueryOptions;
+import com.google.cloud.bigquery.Field;
 import com.google.cloud.bigquery.FieldValueList;
 import com.google.cloud.bigquery.Job;
 import com.google.cloud.bigquery.JobId;
@@ -15,8 +16,10 @@ import org.json.JSONObject;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * BigQuery Service - setup google credentials and handle all BigQuery searches
@@ -52,8 +55,8 @@ public class BigQueryService {
 
         try {
             bigquery = BigQueryOptions.newBuilder().setProjectId(properties.getProjectId()).setCredentials(GoogleCredentialsUtility.getCreds(properties.getCredentialsPath(), properties.getCredientalsName())).build().getService();
-        } catch (Exception ex) {
-            throw new BigQuerySearchException("IO Exception thrown - can't find google credintials file", ex);
+        } catch (IOException ex) {
+            throw new BigQuerySearchException("IO Exception thrown - can't find google credentials file", ex);
         }
 
         final QueryJobConfiguration queryConfig =
@@ -80,15 +83,14 @@ public class BigQueryService {
                 // errors, not just the latest one.
                 throw new BigQuerySearchException(queryJob.getStatus().getError().toString());
             }
-            // Get the results.
-            //final QueryResponse response = bigquery.getQueryResults(jobId);
 
             final TableResult result = queryJob.getQueryResults();
 
-            final List<String> fieldList = new ArrayList<>();
 
             //build list of fields in table results expected from query schema
-            result.getSchema().getFields().forEach(field -> fieldList.add(field.getName()));
+            final List<String> fieldList = result.getSchema().getFields().stream()
+                    .map(Field::getName)
+                    .collect(Collectors.toList());
 
             return tableResultToJSONStringListConverter(result, fieldList);
         } catch (InterruptedException ex) {
