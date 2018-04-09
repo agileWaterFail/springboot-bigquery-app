@@ -87,14 +87,8 @@ public class BigQueryService {
 
             final List<String> fieldList = new ArrayList<>();
 
-            //build list of fields in table results expected from query
-            fieldList.add("series_id");
-            fieldList.add("year");
-            fieldList.add("period");
-            fieldList.add("value");
-            fieldList.add("footnote_codes");
-            fieldList.add("date");
-            fieldList.add("series_title");
+            //build list of fields in table results expected from query schema
+            result.getSchema().getFields().forEach(field -> fieldList.add(field.getName()));
 
             return tableResultToJSONStringListConverter(result, fieldList);
         } catch (InterruptedException ex) {
